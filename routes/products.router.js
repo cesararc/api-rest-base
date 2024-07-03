@@ -1,83 +1,78 @@
 const express = require('express');
-
-const { faker } = require('@faker-js/faker');
-
+const ProductService = require('./../services/product.service');
+const { logErrors, errorHandler } = require('./../middlewares/error.handler');
 
 const router = express.Router();
+const service = new ProductService();
 
-
-router.get('/', (req, res) => {
-  const products = [];
-  const { size } = req.query;
-  const limit = size || 10;
-  for (let index = 0; index < limit; index++) {
-    products.push({
-      name: faker.commerce.productName(),
-      price: parseInt(faker.commerce.price(), 10),
-      image: faker.image.imageUrl(),
-    });
-
-  }
-  res.json(products)
+router.get('/', async (req, res) => {
+  const products = await service.find();
+  res.json(products);
 });
 
 
 router.get('/filter', (req, res) => {
-  res.send('cesar');
+  res.send('yo soy un filter');
 }
 )
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res, next) => {
+  try {
   const {id} = req.params;
-  // esa es la version ES6 si quieres la otra seria asi
-  //const id = req.params.id;
-  // con esa nomenclarutra de es6 es mejor se llama destructuracion es
-if(id === '999'){
-  res.status(404).json({
-    message: "Not Found"
-  })
-}else{
-  res.status(200).json({
-    id,
-    name: "Jarabe para la tos",
-    price: 12
-  })
-  }
+  const product = await service.findOne(id);
+  res.json(product);
+} catch (error) {
+  next(error);
+}
+
 });
 
-router.post('/', (req, res) =>  {
+router.post('/', async (req, res) =>  {
   const body = req.body;
+  const newProduct = await service.create(body);
   res.status(201).json({
     message: 'created',
-    data: body,
+    data: newProduct,
   })
 });
 
-router.patch('/:id', (req, res) =>  {
+router.patch('/:id', async (req, res, next) =>  {
+
+  try {
+    const { id } = req.params;
+
+    const body = req.body;
+    const product = await service.update(id, body);
+    res.json({
+      message: 'partial updated',
+      product,
+    })
+  } catch (error) {
+    next(error);
+  }
+
+
+});
+
+router.delete('/:id', async (req, res, next) =>  {
+  try {
+
+  const { id } = req.params;
+  const deleteProduct = await service.delete(id);
+  res.json(deleteProduct);
+} catch (error) {
+  next(error);
+}
+});
+
+
+router.put('/:id', async (req, res) =>  {
   const { id } = req.params;
   const body = req.body;
-  res.json({
-    message: 'partial updated',
-    data: body,
-    id,
-  })
-});
-
-router.delete('/:id', (req, res) =>  {
-  const { id } = req.params;
-  res.json({
-    message: 'deleted',
-    id,
-  })
-});
-
-
-router.put('/:id', (req, res) =>  {
-  const { id } = req.params;
-  const body = req.body;
+  const updateProduct = await service.update(id, body);
   res.json({
     message: ' updated',
-    data: body,
+    data: updateProduct,
     id,
   })
 });
