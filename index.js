@@ -9,10 +9,10 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const whitelist = ['http://127.0.0.1:5500','http://localhost:8080'];
+const whitelist = ['http://127.0.0.1:5500','http://localhost:8080','http://localhost:5432'];
 const options = {
   origin: (origin, callback) => {
-    if (whitelist.includes(origin)) {
+    if (whitelist.includes(origin) || !origin) { // si el origen esta en la lista blanca o no hay origen
       callback(null, true);
     } else {
       callback(new Error('No permitido'));
