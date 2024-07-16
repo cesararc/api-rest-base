@@ -49,6 +49,7 @@ router.post(
   },
 );
 
+
 router.patch(
   '/:id',
   validatorHandler(getUserSchema, 'params'),

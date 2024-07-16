@@ -1,5 +1,6 @@
 // error.handler.js
 //log errors
+const { ValidationError } = require('sequelize');
 const logErrors = (err, req, res, next) => {
   //imprimimos el error
   // esto es util para hacer tracking de los errores
@@ -28,5 +29,16 @@ const boomErrorHandler = (err, req, res, next) => {
   }
 };
 
-module.exports = { errorHandler, logErrors, boomErrorHandler };
+const ormErrorHandler = (err, req, res, next) => {
+  if (err instanceof ValidationError) {
+    res.status(409).json({
+      message: err.message,
+      errors: err.errors,
+    });
+  } else {
+    next(err);
+  }
+}
+
+module.exports = { errorHandler, logErrors, boomErrorHandler, ormErrorHandler};
 
