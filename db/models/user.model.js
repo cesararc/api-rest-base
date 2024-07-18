@@ -23,6 +23,11 @@ const UserSchema = {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  role: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'customer',
+  },
   createdAt: { // como estamos en javascript usamos camelCase que es lo mas comun, pero en sql se usa snake_case en cez de camel con respecto a la division
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW,
