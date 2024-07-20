@@ -1,6 +1,7 @@
 const boom = require('@hapi/boom');
 const getConnection = require('../libs/postgres');
 const { models } = require('../libs/sequelize');
+const { da } = require('@faker-js/faker');
 
 
 class CustomerService {
@@ -8,11 +9,20 @@ class CustomerService {
 
   }
   async create(data) {
-    const newCustomer = await models.Customer.create(data);
+    const newCustomer = await models.Customer.create(data,{
+      include: ['user']
+    });
     return newCustomer;
   }
   async find() {
-    const rta = await models.Customer.findAll();
+    const rta = await models.Customer.findAll({
+      include: [
+        {
+          association: 'user',
+          attributes: ['email',],
+        },
+      ],
+    });
     return rta;
 
   };

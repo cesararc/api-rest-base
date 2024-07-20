@@ -33,6 +33,7 @@ const CustomerSchema = {
     type: DataTypes.INTEGER,
     allowNull: false,
     field: 'user_id',
+    unique: true,
     references: { // aqui estamos diciendo que esta columna es una llave foranea
       model: USER_TABLE, //nombre de la tabla
       key: 'id',

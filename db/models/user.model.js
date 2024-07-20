@@ -34,6 +34,7 @@ const UserSchema = {
 
 class User extends Model {
   static associate(models) { //estaticos quiere decir que no necesitamos instanciar la clase para poder llamarlo o declararlo tambien nos permite llamarlo sin instanciar la clase
+  this.hasOne(models.Customer, { as: 'customer', foreignKey: 'userId' }); // aqui estamos diciendo que un usuario tiene un cliente
   }
   static config(sequelize) {
     return {
