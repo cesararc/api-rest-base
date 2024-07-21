@@ -3,6 +3,7 @@ const ProductService = require('./../services/product.service');
 const { logErrors, errorHandler } = require('./../middlewares/error.handler');
 const validatorHandler = require('../middlewares/validator.handler');
 const { createProductSchema, updateProductSchema, getProductSchema } = require('../schema/product.schema');
+const { tr } = require('@faker-js/faker');
 
 
 const router = express.Router();
@@ -34,13 +35,15 @@ router.get('/:id',
 
 router.post('/',
   validatorHandler(createProductSchema, 'body'),
-  async (req, res) =>  {
-  const body = req.body;
-  const newProduct = await service.create(body);
-  res.status(201).json({
-    message: 'created',
-    data: newProduct,
-  })
+  async (req, res, next) =>  {
+  try {
+    const body = req.body;
+    const newProduct = await service.create(body);
+    res.status(201).json(newProduct);
+  }
+  catch (error) {
+    next(error);
+  }
 });
 
 router.patch('/:id',
