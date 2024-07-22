@@ -1,5 +1,4 @@
-const { ref } = require('joi');
-const { on } = require('nodemon');
+
 const {Model, DataTypes, Sequelize} = require('sequelize');
 const { CATEGORY_TABLE } = require('./category.model');
 
