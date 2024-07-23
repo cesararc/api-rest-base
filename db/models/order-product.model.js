@@ -44,7 +44,7 @@ const OrderProductSchema = {
     allowNull: false,
     type: DataTypes.DATE,
     field: 'created_at',
-    defaultvalue: Sequelize.NOW,
+    defaultValue: Sequelize.NOW,
   },
 };
 

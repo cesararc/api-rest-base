@@ -43,7 +43,6 @@ router.post('/',
     validatorHandler(addItemSchema, 'body'),
     async (req, res, next) => {
       try {
-
         const body = req.body;
         const order = await service.addItem(body);
         res.status(201).json(order);

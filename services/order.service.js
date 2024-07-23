@@ -14,9 +14,9 @@ class OrderService {
     });
     return newOrder;
   }
-  async addItem(id, data) {
+  async addItem(data) {
 
-    const newItem = await models.OrderItem.create(data);
+    const newItem = await models.OrderProduct.create(data);
     return newItem;
   }
 
@@ -27,7 +27,8 @@ class OrderService {
           association: 'customer',
           attributes: ['name',],
         },
-      ],
+        'items'
+      ]
     });
     return rta;
 
@@ -38,7 +39,9 @@ class OrderService {
         {
           association: 'customer',
           include: ['user'],
+
         },
+        'items'
       ],
     });
     if (!order) {

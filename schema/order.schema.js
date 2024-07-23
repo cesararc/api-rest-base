@@ -4,7 +4,7 @@ const id = joi.number();
 const customerId = joi.number().integer();
 const orderId = joi.number().integer();
 const productId = joi.number().integer();
-const quantity = joi.number().integer.min(1);
+const quantity = joi.number().integer().min(1);
 
 
 const getOrderSchema = joi.object({
