@@ -28,10 +28,16 @@ const OrderSchema = {
   },
 };
 
-class Order extends Model {
+class Order extends Model {//tenemos la orden y tiene variositems de compra
   static associate(models) {
     this.belongsTo(models.Customer, {
       as: 'customer',
+    });
+    this.belongsToMany(models.Product, {
+      through: models.OrderProduct,
+      as: 'items',
+      foreignKey: 'orderId',
+      otherKey: 'productId',
     });
   }
   static config(sequelize) {

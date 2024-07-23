@@ -14,6 +14,12 @@ class OrderService {
     });
     return newOrder;
   }
+  async addItem(id, data) {
+
+    const newItem = await models.OrderItem.create(data);
+    return newItem;
+  }
+
   async find() {
     const rta = await models.Order.findAll({
       include: [
