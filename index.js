@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const whitelist = ['http://127.0.0.1:5500','http://localhost:8080','http://localhost:5432'];
+const whitelist = ['http://127.0.0.1:5500','http://localhost:8080','http://localhost:5432', 'https://api-rest-base-73uu8nxj9-cesars-projects-42670874.vercel.app'];
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) { // si el origen esta en la lista blanca o no hay origen
