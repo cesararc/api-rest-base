@@ -64,7 +64,7 @@ app.use(errorHandler);
 // // ahora le decimos al app que debe escuchar un puerto especifico
 
  app.listen(port, () => {
-   console.log('mi puerto');
+   console.log('mi puerto es', port);
  });
 
 
