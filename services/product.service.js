@@ -3,29 +3,21 @@ const  boom  = require('@hapi/boom');
 
 // const pool = require('../libs/postgres.pool');
 const { models } = require('../libs/sequelize');
+const { Op } = require('sequelize');
+
 
 
 class ProductService {
 
   constructor(){
     this.products = [];
-    this.generate();
+    //this.generate();
     // this.pool = pool;
     // this.pool.on('error', (err) => console.error(err));
   }
 
     generate(){
-      const limit =  100;
-      for (let index = 0; index < limit; index++) {
-        this.products.push({
-          id: faker.string.uuid(),
-          name: faker.commerce.productName(),
-          price: parseInt(faker.commerce.price(), 10),
-          image: faker.image.url(),
-          isBlock: faker.datatype.boolean(),
-        });
 
-      }
     }
 
 
@@ -37,17 +29,41 @@ class ProductService {
       return newProduct;
     }
 
-    async find() {
-      const products = await models.Product.findAll({
-        include: ['category']
-      });
-      return products;
+    async find(query) {
+      const options = {
+        include: ['category'],
+      };
 
-    };
+      const { limit, offset, max_price, min_price } = query;
+
+      const maxPrice = max_price;
+      const minPrice = min_price;
+
+      if (limit && offset) {
+        options.limit = limit;
+        options.offset = offset;
+      }
+
+      if ( maxPrice || minPrice) {
+        if (maxPrice && minPrice && maxPrice < minPrice) {
+          throw boom.badRequest('maxprice must be greater than minprice');
+        }
+
+        options.where = {
+          price: {
+            [Op.gte]: minPrice || 0,
+            [Op.lte]: maxPrice || 1000000,
+          },
+        };
+      }
+
+      const products = await models.Product.findAll(options);
+      return products;
+    }
 
     async findOne(id) {
-      //const name = this.getTotal();
-      const product = this.products.find(item => item.id === id);
+      const product = await models.Product.findByPk(id);
+
       if (!product){
         //throw new Error('product not found');
         throw boom.notFound('product not found');

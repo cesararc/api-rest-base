@@ -27,7 +27,7 @@ class OrderService {
           association: 'customer',
           attributes: ['name',],
         },
-        'items'
+
       ]
     });
     return rta;
