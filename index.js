@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-
+const { authApi } = require('./middlewares/auth.handler');
 const routerApi = require('./routes');
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
+const checkApiKey = require('./middlewares/auth.handler');
 
 
 const app = express();
@@ -25,10 +26,10 @@ app.use(cors(options));
 
 // creamoun algo en la ruta raiz y damos un arespuesa
 app.get('/', (req, res) => {
-  res.send('Hola')
+  res.send('Api rest');
 });
 
-app.get('/menu', (req, res) => {
+app.get('/menu', checkApiKey, (req, res) => {
   res.send('Hola')
 });
 

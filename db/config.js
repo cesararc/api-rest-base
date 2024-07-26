@@ -1,4 +1,3 @@
-const { de, ur } = require('@faker-js/faker');
 const { config } = require('../config/config');
 
 const USER = encodeURIComponent(config.dbUser);
@@ -8,11 +7,11 @@ const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${
 
 module.exports = {
   development: {
-    url: URI,
+    url: config.dbUrl,
     dialect: 'postgres',
   },
   production: {
-    url: URI,
+    url: config.dbUrl,
     dialect: 'postgres',
   },
 };
