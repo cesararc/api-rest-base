@@ -23,6 +23,7 @@ const options = {
   }
 }
 app.use(cors(options));
+require('./utils/auth/');
 
 // creamoun algo en la ruta raiz y damos un arespuesa
 app.get('/', (req, res) => {
