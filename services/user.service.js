@@ -3,6 +3,8 @@ const getConnection = require('../libs/postgres');
 //const sequelize = require('../libs/sequelize');
 const { models } = require('../libs/sequelize');
 // const pool = require('../libs/postgres.pool');
+const bcrypt = require('bcrypt');
+
 
 
 class UserService {
@@ -11,7 +13,12 @@ class UserService {
     //this.pool.on('error', (err) => console.error(err));
   }
   async create(data) {
-    const newUser = await models.User.create(data);
+    const hash = await bcrypt.hash(data.password, 10);
+    const newUser = await models.User.create({
+      ...data,
+      password: hash,
+    });
+    delete newUser.dataValues.password;
 
     return newUser;
   }
@@ -25,6 +32,15 @@ class UserService {
     return rta;
 
   };
+  async findEmail(email) {
+    const user = await models.User.findOne({
+      where: {
+        email,
+      },
+    });
+    return user;
+  }
+
   async findOne(id) {
     const user = await models.User.findByPk(id);
     if (!user) {
