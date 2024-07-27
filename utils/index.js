@@ -1,4 +1,4 @@
 const passport = require('passport');
-const LocalStrategy = require('./local.strategy');
+const LocalStrategy = require('./auth/local.strategy');
 
 passport.use(LocalStrategy);
