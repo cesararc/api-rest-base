@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
+const { config } = require('./config/config');
 
-const secret = 'mysecret'; //asi va a encriptar el header y al token, solo el backend debe saberlo
+
+const secret =  config.jwtToken;
 
 const payload = { // el payload es lo que vamos a encryptar dentro de ese token la info sensible
   sub: 1,
@@ -9,9 +11,11 @@ const payload = { // el payload es lo que vamos a encryptar dentro de ese token 
   // tambien se puede agregar cualquier atributo que se quiera
 };
 
+
+
 function signToken(payload) {
   return jwt.sign(payload, secret, { expiresIn: '1h' });
 }
 
-const token = signToken(payload ,secret);
-console.log(token);
+
+module.exports = { signToken };
