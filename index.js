@@ -3,7 +3,7 @@ const cors = require('cors');
 const { authApi } = require('./middlewares/auth.handler');
 const routerApi = require('./routes');
 const { logErrors, errorHandler, boomErrorHandler, ormErrorHandler } = require('./middlewares/error.handler');
-const checkApiKey = require('./middlewares/auth.handler');
+const { checkApiKey } = require('./middlewares/auth.handler');
 
 
 const app = express();

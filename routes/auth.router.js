@@ -20,7 +20,7 @@ router.post('/login',
         role: user.role,
       };
       //const token = signToken(payload); // tambien en las importamvciones podemos llamar de manera directa la libreria jwt
-      const token = jwt.sign(payload, secret);
+      const token = jwt.sign(payload, secret, { expiresIn: '1h' });
       res.json({
         token,
         user,
