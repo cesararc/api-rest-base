@@ -1,6 +1,8 @@
 const {Model, DataTypes, Sequelize} = require('sequelize');
 
 const ORDER_TABLE = 'orders';
+const { CUSTOMER_TABLE } = require('./customer.model');
+
 
 const OrderSchema = {
   id: {
@@ -14,7 +16,7 @@ const OrderSchema = {
     allowNull: false,
     field: 'customer_id',
     references: {
-      model: ORDER_TABLE,
+      model: CUSTOMER_TABLE,
       key: 'id',
     },
     onUpdate: 'CASCADE',

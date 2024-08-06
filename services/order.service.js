@@ -9,15 +9,30 @@ class OrderService {
 
   }
   async create(data) {
-    const newOrder = await models.Order.create(data,{
-      include: ['customer']
-    });
+    const newOrder = await models.Order.create(data);
     return newOrder;
   }
   async addItem(data) {
 
     const newItem = await models.OrderProduct.create(data);
     return newItem;
+  }
+
+  async findByUser(userId){
+    const order = await models.Order.findAll({
+      where:{
+       '$customer.user.id$': userId
+      },
+      include: [
+        {
+          association: 'customer',
+          include: ['user'],
+
+        },
+
+      ],
+    });
+    return order;
   }
 
   async find() {
